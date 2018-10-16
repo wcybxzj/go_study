@@ -1,0 +1,83 @@
+1.etcd安装
+wget https://github.com/etcd-io/etcd/releases/download/v3.3.9/etcd-v3.3.9-linux-amd64.tar.gz
+
+启动
+./etcd
+
+使用
+./etcdctl set ybx 123
+123
+
+./etcdctl get ybx 123
+123
+
+==========================================================================================
+2.etcd问题收集
+https://blog.csdn.net/qq_35440678/article/details/80425896
+
+1、使用etcd clientV3 写入，etcdctl读取不到问题
+export ETCDCTL_API=3
+
+
+
+2、keepalive不生效问题
+func Register(dir string, value string) {
+
+    var (
+        dialTimeout    = 5 * time.Second
+        endpoints      = []string{"127.0.0.1:2379"}
+    )
+    cli, err := clientv3.New(clientv3.Config{
+        Endpoints:  endpoints,
+        DialTimeout: dialTimeout,
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer cli.Close()
+
+    resp, err := cli.Grant(context.TODO(), 5)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    _, err = cli.Put(context.TODO(), dir, value, clientv3.WithLease(resp.ID))
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Println(resp.ID)
+    fmt.Println("ttl:")
+    // the key 'foo' will be kept forever
+    ch, kaerr := cli.KeepAlive(context.TODO(), resp.ID)
+    if kaerr != nil {
+        log.Fatal(kaerr)
+    }
+
+    ka := <-ch
+
+    fmt.Println("ttl:", ka.TTL)
+    // Output: ttl: 5
+    gresp, err := cli.Get(context.TODO(),dir,clientv3.WithLease(resp.ID))
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println(gresp.Kvs)
+    fmt.Println("number of keys:", len(gresp.Kvs))
+
+}
+
+现象：执行完这个方法后keepalive 的节点会立马删除，百思不得其解。
+原因：方法执行完后直接close了
+defer cli.Close()
+解决方法：应该把 cli 设置为全局的，不进行销毁
+==========================================================================================
+
+
+==========================================================================================
+
+
+==========================================================================================
+
+
+==========================================================================================

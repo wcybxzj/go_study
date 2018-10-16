@@ -1,0 +1,22 @@
+web.go:
+增加/net/http/pprof
+
+http://192.168.1.123:8888/list/fib.txt
+
+1.普通情况
+http://192.168.1.123:8888/debug/pprof
+
+
+2.查看30秒pprof
+vim /usr/local/go/src/net/http/pprof/pprof.go:
+look at a 30-second CPU profile:
+go tool pprof http://localhost:8888
+输入web
+
+同时页面狂刷
+http://192.168.1.123:8888/list/web.go
+http://127.0.0.1:8888/list/web.go
+
+
+3.look server for heap memory
+go tool pprof http://localhost:8888/debug/pprof/heap

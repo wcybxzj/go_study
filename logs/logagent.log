@@ -1,0 +1,4 @@
+2018/10/08 18:01:19.417 [D]  init success
+2018/10/08 18:01:19.417 [D]  load conf succ, config:&{debug ./logs/logagent.log [{/usr/local/nginx/logs/access.log nginx_log}]}
+2018/10/08 18:01:28.408 [D]  init success
+2018/10/08 18:01:28.408 [D]  load conf succ, config:&{debug ./logs/logagent.log [{/usr/local/nginx/logs/access.log nginx_log}]}

@@ -1,0 +1,16 @@
+1.启动zookeeper
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+2.启动kafka
+bin/kafka-server-start.sh config/server.properties
+
+3.启动etcd
+./etcd
+
+4.打开日志监控自己的log
+tail -f /tmp/logagent.log
+
+5.main.go 对各种日志进行监控
+
+6.kafka消费测试
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic nginx_log --from-beginning

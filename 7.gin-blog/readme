@@ -1,0 +1,9 @@
+用Postman
+
+POST访问:http://127.0.0.1:8000/api/v1/tags?name=1&state=1&created_by=test
+POST访问:http://127.0.0.1:8000/api/v1/tags?name=2&state=1&created_by=test，发现created_on已经有值了！
+
+PUT访问:http://127.0.0.1:8000/api/v1/tags/1?name=edit1&state=0&modified_by=edit1
+DELETE访问:http://127.0.0.1:8000/api/v1/tags/1，查看code是否返回200
+
+GET访问:http://127.0.0.1:8000/api/v1/tags

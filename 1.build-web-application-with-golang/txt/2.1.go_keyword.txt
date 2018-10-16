@@ -1,0 +1,10 @@
+GO关键词:
+break       default         func       interface    select
+case        defer           go         map          struct
+chan        else            goto       package      switch
+const       fallthrough     if         range        type
+continue    for             import     return       var
+
+main.main()函数(这个函数位于主包）是每一个独立的可运行程序的入口点。)
+
+Go是天生支持UTF-8的，任何字符都可以直接输出，你甚至可以用UTF-8中的任何字符作为标识符。

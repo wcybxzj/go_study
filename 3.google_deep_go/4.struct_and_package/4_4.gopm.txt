@@ -1,0 +1,6 @@
+翻墙下go包
+go get -v -u github.com/gpmgo/gopm
+
+gopm get -g -v -u go get golang.org/x/tools/cmd/goimports
+-g:下载到GOPATH -u:如果存在更新
+

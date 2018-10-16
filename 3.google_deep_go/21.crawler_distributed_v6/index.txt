@@ -1,0 +1,25 @@
+启动顺序
+=========================================================================
+worker:
+go run worker.go --port=4000
+go run worker.go --port=4001
+go run worker.go --port=4002
+=========================================================================
+itemsaver:
+go run itemsaver.go --port=5000
+=========================================================================
+main:
+go run main.go --itemsaver_host=":5000" --worker_hosts=":4000,:4001,:4002"
+=========================================================================
+
+frontend:
+go run starter.go
+
+// http://localhost:8888/search
+// http://localhost:8888/search?q=男 已购车 已购房&from=67
+
+//正式搜索：
+//http://localhost:8888/
+//搜索框:男 已购房 Age:(<30) Height:(>180)
+//搜索框:男 已购房 Age:(<30) Height:(>180) 20000
+//搜索框:女 Age:(<25) Height:(>165) Weight:([1 TO 50])

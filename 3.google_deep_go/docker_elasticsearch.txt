@@ -1,0 +1,159 @@
+===============================19.docker+elasticsearch====================================
+ubuntu docker安装 看 docker_wwww
+
+１.启动:
+docker pull elasticsearch:6.4.1
+sysctl -w vm.max_map_count=262144
+docker run -d -p 9200:9200 elasticsearch:6.4.1
+
+2.中文分词插件IK
+
+3.调试:postman
+
+4.基本信息
+请求:
+http method: GET
+URL:http://localhost:9200
+header: Content-Type:application/json
+响应:
+{
+  "name" : "k2rjpVk",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "-iJgGFAWT66AFb19ozSX_g",
+  "version" : {
+    "number" : "5.6.11",
+    "build_hash" : "bc3eef4",
+    "build_date" : "2018-08-16T15:25:17.293Z",
+    "build_snapshot" : false,
+    "lucene_version" : "6.6.1"
+  },
+  "tagline" : "You Know, for Search"
+}
+
+5.创建制定具体的path
+http method: PUT或者POST
+URL:http://localhost:9200
+path:imooc/course/1
+header: Content-Type:application/json
+text:
+{
+"name":"golang",
+"instructor":"ccmouse"
+}
+
+响应:
+{
+  "_index": "imooc",
+  "_type": "course",
+  "_id": "1",
+  "_version": 1,
+  "result": "created",
+  "_shards": {
+    "total": 2,
+    "successful": 1,
+    "failed": 0
+  },
+  "created": true
+}
+
+6.创建不制定具体的path
+http method: 必须POST
+URL:http://localhost:9200
+header: Content-Type:application/json
+path:imooc/course/
+text:
+{
+"name":"golang_pipeline",
+"instructor":"ccmouse"
+"url":"https://www.imooc.com/video/16274"
+}
+
+{
+  "_index": "imooc",
+  "_type": "course",
+  "_id": "AWVvpNjAbOxOJhxgdu3G",
+  "_version": 1,
+  "result": "created",
+  "_shards": {
+    "total": 2,
+    "successful": 1,
+    "failed": 0
+  },
+  "created": true
+}
+
+7.修改:
+请求:
+http method: 必须POST
+URL:http://localhost:9200
+header: Content-Type:application/json
+path:imooc/course/2
+text:
+{
+    "name": "interview",
+    "instructor": "ccmouse",
+    "url":"https://www.imooc.com/video/iiiiiiiiiiiiii"
+}
+
+响应:
+{
+    "_index": "imooc",
+    "_type": "course",
+    "_id": "2",
+    "_version": 2,
+    "result": "updated", //更新
+    "_shards": {
+        "total": 2,
+        "successful": 1, //成功条数
+        "failed": 0
+    },
+    "created": false
+}
+
+8.查询:具体path查询
+http method: GET
+URL:http://localhost:9200
+path:imooc/course/1
+
+{
+  "_index": "imooc",
+  "_type": "course",
+  "_id": "1",
+  "_version": 3,
+  "found": true,
+  "_source": {
+    "name": "golang",
+    "instructor": "ccmouse"
+  }
+}
+
+8.搜索
+GET
+http://localhost:9200
+imooc/course/_search
+
+GET
+http://localhost:9200
+imooc/course/_search?q=golang
+
+GET
+http://127.0.0.1:9200/imooc/_mapping
+
+9.搜索加分页
+http://127.0.0.1:9200/dating_profile/zhenai/_search?size=20&pretty=
+size:是分页获取的数量
+{
+    "hits": {
+        "total": 1216, 数据总数
+    }
+}
+
+10.男 已够房 已购车 小于30
+http://127.0.0.1:9200/dating_profile/zhenai/_search?size=1000&pretty=&q=男 已够房 已购车 Age:(<30)
+http://127.0.0.1:9200/dating_profile/zhenai/_search?size=1000&pretty=&q=男 已够房 已购车 Payload.Age:(<30)
+http://127.0.0.1:9200/dating_profile/_search
+
+============================20.go 使用elasticsearch=======================================
+https://github.com/olivere/elastic
+go get gopkg.in/olivere/elastic.v5
+import "gopkg.in/olivere/elastic.v5"

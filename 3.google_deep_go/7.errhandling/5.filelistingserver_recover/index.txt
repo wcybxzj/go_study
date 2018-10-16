@@ -1,0 +1,63 @@
+=======================================================================================
+1.修改web.go
+http.HandleFunc("/",
+=======================================================================================
+2.chrome访问:
+http://192.168.91.15:8888/abc
+显示:
+该网页无法正常运作
+192.168.91.15 未发送任何数据。
+ERR_EMPTY_RESPONSE
+=======================================================================================
+3.终端报错:但是程序没挂
+2018/07/29 19:17:20 http: panic serving 192.168.91.1:5233: runtime error: slice bounds out of range
+goroutine 5 [running]:
+net/http.(*conn).serve.func1(0xc420092820)
+	/usr/local/go/src/net/http/server.go:1726 +0xd0 (看这个代码 def func中有recover 这就是程序没挂的原因)
+panic(0x64e8e0, 0x7ff450)
+	/usr/local/go/src/runtime/panic.go:502 +0x229
+go_study/3.google_deep_go/7.errhandling/5.filelistingserver_recover/filelisting.HandleFileListing(0x6d2520, 0xc42011e000, 0xc42011a100, 0x0, 0x0
+)	/root/www/go_www/src/go_study/3.google_deep_go/7.errhandling/5.filelistingserver_recover/filelisting/handler.go:10 +0x160
+main.errWrapper.func1(0x6d2520, 0xc42011e000, 0xc42011a100)
+	/root/www/go_www/src/go_study/3.google_deep_go/7.errhandling/5.filelistingserver_recover/web.go:20 +0x4a
+net/http.HandlerFunc.ServeHTTP(0xc420010a40, 0x6d2520, 0xc42011e000, 0xc42011a100)
+	/usr/local/go/src/net/http/server.go:1947 +0x44
+net/http.(*ServeMux).ServeHTTP(0x80aa60, 0x6d2520, 0xc42011e000, 0xc42011a100)
+	/usr/local/go/src/net/http/server.go:2337 +0x130
+net/http.serverHandler.ServeHTTP(0xc420088b60, 0x6d2520, 0xc42011e000, 0xc42011a100)
+	/usr/local/go/src/net/http/server.go:2694 +0xbc
+net/http.(*conn).serve(0xc420092820, 0x6d26e0, 0xc420062340)
+	/usr/local/go/src/net/http/server.go:1830 +0x651
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:2795 +0x27b
+=======================================================================================
+4.解决:
+终端打印好多stack trace和浏览器显示该网页无法访问的问题
+web.go中func errWrapper()加def func(){recover}
+
+chrome访问:
+http://192.168.91.15:8888/abc
+显示:
+Internal Server Error
+
+终端显示:
+2018/07/29 19:55:07 Panic :runtime error: slice bounds out of range
+
+=======================================================================================
+测试:
+如果要测试http 403 Forbidden, 程序运行在ybx账号下,root创建一个文件 chmod 600.fib2.txt
+
+访问:http://192.168.91.15:8888/
+终端:2018/07/29 22:41:40 handler返回err:::::userError2.Error()::::Path must start with /list/
+浏览器:::::userError2.Message()::::Path must start with /list/
+结果:终端和浏览器返回的信息是最后一部分是一样的
+
+访问:http://192.168.91.15:8888/list/fib2.txt
+终端:2018/07/29 22:34:49 handler返回err:open fib2.txt: permission denied
+浏览器:Forbidden
+结果:终端和浏览器返回的信息完全不同,浏览器的信息非常少
+
+访问:http://192.168.91.15:8888/list/123
+终端:2018/07/29 22:46:14 handler返回err:open 123: no such file or directory
+浏览器:Not Found
+结果:终端和浏览器返回的信息完全不同,浏览器的信息非常少

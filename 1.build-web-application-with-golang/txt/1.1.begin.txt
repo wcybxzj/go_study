@@ -1,0 +1,53 @@
+1.安装go
+tar -zxvf go1.10.3.linux-amd64.tar.gz  -C /usr/local/
+
+2.设置环境变量
+GOPATH是我的代码目录
+vim /etc/bashrc:
+export GOROOT=/usr/local/go #go软件安装位置
+export PATH=$PATH:$GOROOT/bin #go自己的bin
+export GOPATH=$HOME/www/go_www #自己go的代码位置
+export PATH=$PATH:$GOPATH/bin #自己go的bin
+
+3.环境变量的解释
+以上 $GOPATH 目录约定有三个子目录：
+src 存放源代码（比如：.go .c .h .s等）
+pkg 编译后生成的文件（比如：.a）
+bin 编译后生成的可执行文件（为了方便，可以把此目录加入到 $PATH 变量中，如果有多个gopath，那么使用${GOPATH//://bin:}/bin添加所有的bin目录）
+
+4.代码目录结构规划
+一个目录一个项目，例如: $GOPATH/src/myapp1, $GOPATH/src/myapp2
+新建应用或者一个代码包时在src目录下新建一个文件夹，名称一般是代码包名称，也允许多级目录，
+例src下面新建了目录$GOPATH/src/github.com/astaxie/beedb,
+那么这个包路径就是"github.com/astaxie/beedb"，
+包名称是最后一个目录beedb
+
+5.创建库mymath
+mkdir /root/www/go_www
+mkdir src pkg bin
+cd $GOPATH/src
+mkdir mymath
+
+写一个代码:sqrt.go
+go install 或者 go install mymath
+ll pkg/linux_amd64/mymath.a
+
+6.创建项目使用mymath库
+写一个程序调用这个库
+mkdir $GOPATH/src/mathapp
+cd $GOPATH/src/mathapp
+vim $GOPATH/src/mathapp/main.go
+go build
+./mathapp
+
+7.安装应用
+go install
+mathapp
+
+8.获取远程包
+go get github.com/astaxie/beedb
+go get本质上可以理解为首先第一步是通过源码工具clone代码到src下面，然后执行go install
+在代码中如何使用远程包，很简单的就是和使用本地包一样，只要在开头import相应的路径就可以
+import "github.com/astaxie/beedb"
+
+

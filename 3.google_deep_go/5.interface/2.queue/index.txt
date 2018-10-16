@@ -1,0 +1,1 @@
+使用interface{} 让Queue中可以存放任何类型

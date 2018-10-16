@@ -1,0 +1,139 @@
+1.discuzx3
+安装discuzx3请一定要设置好nginx给dzx3先弄vhost
+cd /home/wwwroot/default/
+git clone https://gitee.com/ComsenzDiscuz/DiscuzX.git dz3
+
+vim /etc/hosts
+127.0.0.1   dz3.com
+
+配置nginx.conf
+
+nginx -s reload
+//============================================================================================
+2.discuz
+2.1配置discuz后台配置rewrite
+2.2配置第三方统计代码
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="http://192.168.1.177/tongji.js"></script>
+//============================================================================================
+3.nginx
+单独下载一个nginx 1.14.tar.gz
+./configure --prefix=/root/nginx
+make
+make install
+//============================================================================================
+4.nginx:
+使用empty gif上报的目标,尽量减少http response
+使用access.log来收集上报请求
+
+4.1:需要ngx_http_empty_gif_module
+/root/soft/nginx-1.14.0/src/http/modules/ngx_http_empty_gif_module.c
+
+4.2:官方文档：
+http://nginx.org/en/docs/http/ngx_http_empty_gif_module.html
+发出1x1 px的透明gif
+
+4.3:
+访问看到一片黑,不报错就说明对了
+http://localhost:8888/dig
+wget localhost:8888/dig
+cat dig
+输出:GIFxxxxxxxxxxxxxxxxxxxxxx
+
+4.6:
+如果dz网站在ajax get访问 http://localhost:8888/dig 时候报错405
+修改配置将405转成200
+location = /dig {
+    empty_gif;
+    error_page 405=200 $request_uri;
+}
+
+4.7
+nignx中access.log中$body_bytes_sent是http相应的http body部分的大小
+curl -v http://localhost:8888/dig > empty.gif
+http请求:
+* TCP_NODELAY set
+* Connected to localhost (127.0.0.1) port 8888 (#0)
+> GET /dig HTTP/1.1
+> Host: localhost:8888
+> User-Agent: curl/7.58.0
+> Accept: */*
+http响应:
+< HTTP/1.1 200 OK
+< Server: nginx
+< Date: Sun, 16 Sep 2018 13:21:38 GMT
+< Content-Type: image/gif
+< Content-Length: 43
+< Last-Modified: Mon, 28 Sep 1970 06:00:00 GMT
+< Connection: keep-alive
+
+//============================================================================================
+5.压测网站产生nginx日志
+
+//============================================================================================
+6.各种redis key
+"pv_forum_hour_1537891200"
+"pv_forum_day_1537833600"
+"uv_thread_min_1537892760"
+"uv_hour_1537891200"
+"pv_thread_hour_1537891200"
+"pv_min_1537892760"
+"pv_index_min_1537892760"
+"uv_index_min_1537892760"
+"uv_index_day_1537833600"
+"pv_thread_day_1537833600"
+"uv_thread_day_1537833600"
+"pv_index_day_1537833600"
+"uv_forum_day_1537833600"
+"pv_day_1537833600"
+"pv_hour_1537891200"
+"uv_hpll_1537833600"
+"uv_index_hour_1537891200"
+"uv_forum_hour_1537891200"
+"pv_thread_min_1537892760"
+"uv_day_1537833600"
+"uv_forum_min_1537892760"
+"pv_forum_min_1537892760"
+"uv_thread_hour_1537891200"
+"pv_index_hour_1537891200"
+"uv_min_1537892760"
+
+127.0.0.1:6379> ZREVRANGE uv_forum_min_1537892760 0 -1 withscores
+可以看出这1分钟的uv的情况,从大访问量到小访问量
+ 1) "8"--->forum id 对应http://dz3.com/forum-8-1.html
+ 2) "3"--->访问数量
+ 3) "6"
+ 4) "3"
+ 5) "14"
+ 6) "3"
+ 7) "5"
+ 8) "2"
+ 9) "4"
+10) "2"
+11) "2"
+12) "2"
+13) "17"
+14) "2"
+15) "1"
+16) "2"
+17) "9"
+18) "1"
+19) "20"
+20) "1"
+21) "16"
+22) "1"
+23) "13"
+24) "1"
+25) "11"
+26) "1"
+//============================================================================================
+7.ant design pro 前端展示
+https://pro.ant.design/
+https://pro.ant.design/docs/getting-started-cn
+
+git clone -v git@github.com:ant-design/ant-design-pro.git --depth=1
+cd ant-design-pro
+npm install
+npm start # 打开浏览器访问 http://localhost:8000
+
+也可用cnpm来替代npm

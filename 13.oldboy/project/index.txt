@@ -1,0 +1,83 @@
+日志系统:
+================================================================================
+整体分4部分:
+
+第一部分:日志收集客户端(my_logagent_v2)
+功能1:收集本地日志生产到kafka
+功能2:etcd监控需要日志,可以动态增加要监控的日志或者删除之前监控的日志
+
+第二部分:日志传输(log_transfer)
+将kafka的数据,发送给ElasticSearch
+
+第三部分:ElasticSearch + Kibana
+功能1:从kafka消费日志进行展示
+kafka->elasticSearch->Kibana
+
+第四部分:日志配置管理后台(web_admin)
+修改日志收集的内容,动态改变监控内容
+================================================================================
+todo功能:
+1.日志客户端上报心跳到web后台
+2.如果日志客户端挂掉,下一次要从挂掉的地方进行读取日志
+================================================================================
+
+多个goroutine 使用tailf 对日志进行监控
+一个etcdkey有多个监控, 如果改变收集日志的位置改变,日志系统通过etcd的watch api可以发现改变
+
+================================================================================
+测试1:my_logagent_v2
+
+1.启动zookeeper
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+2.启动kafka
+bin/kafka-server-start.sh config/server.properties
+
+3.启动etcd
+./etcd
+
+4.打开日志监控自己的
+tail -f /tmp/logagent.log
+
+5.插入监控路径
+etcd_insert.go:第一次运行必须执行,否则会因为监控的etckey里面没有要监控的内容 ,造成tailf库失败
+
+6.my_logagent_v2/main.go:对日志进行监控
+
+7.修改监控路径,可以看my_logagent_v2/main.go打印出修改
+
+8.etcd_update.go:更新要监控的日志
+
+9.etcd_delete.go:删除监控的日志
+
+10.kafka消费测试
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic nginx_log --from-beginning
+
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic nginx_log_err --from-beginning
+
+================================================================================
+测试2:my_logagent_v2+log_transfer
+1.启动ElasticSearch和Bikana
+cd docker/elk/
+docker-compose up -d
+
+ElasticSearch:
+http://192.168.1.177:15920
+
+Bikana:
+http://192.168.1.177:15601
+
+2.my_logagent_v2同测试1,只是不需要去kafka消费
+
+3.打开日志传输的监控
+tail -f /tmp/log_transfer.log
+
+4.启动日志传输
+cd /log_transfer
+go run main.go
+
+5.kikana创建索引
+
+================================================================================
+测试3:web_admin(不重要没仔细看)
+关闭kafka的消费

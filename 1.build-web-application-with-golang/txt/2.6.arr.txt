@@ -1,0 +1,3 @@
+array就是数组，它的定义方式如下：
+var arr [n]type
+在[n]type中，n表示数组的长度，type表示存储元素的类型

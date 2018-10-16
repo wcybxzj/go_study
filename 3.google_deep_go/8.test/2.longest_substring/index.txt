@@ -1,0 +1,75 @@
+测试使用testing.T
+压测和性能测试使用testing.B
+=========================================================
+//1.表格测试:
+终端:go test .
+或者
+vim:,+t
+=========================================================
+//2.测试代码覆盖率:
+绿色是测试覆盖到的,红色是没测试到的
+终端:
+go test -coverprofile=c.out
+go tool cover -html=c.out
+或者
+vim:
+, +  c
+=========================================================
+//3.压力测试:
+//go test -bench .
+//goos: linux
+//goarch: amd64
+//pkg: go_study/3.google_deep_go/8.test/2.longest_substring
+//BenchmarkLongestSubstring-4    1000000(测试次数)   1580 ns/op(每次操作1580ns)
+//PASS
+//ok  	go_study/3.google_deep_go/8.test/2.longest_substring 1.611s(总测试时间)
+
+=========================================================
+//4.性能测试:
+yum install 'graphviz*'
+
+//进行压测并且输出cpu在什么函数耗时
+go test -bench . -cpuprofile cpu.out
+//查看报告
+go tool pprof cpu.out
+然后输入web
+
+v2:
+结果:
+stringtoslicetune操作耗时第一
+mapxxx:耗时第二
+速度:1595ns/op
+
+v3:
+修改:map改用slice
+结果:大量gc内存回收,
+速度:116407ns/op
+
+v4:
+修改:slice静态化
+结果:memclr就是我们每次清空slice内存清空,
+速度:24154ns/op
+
+v5:
+修改:
+把压测数据变的超级长长度是(491520字节),减弱v4中内存清空的操作占程序运行的比重
+加入b.ResetTimer() 重新计时,排除生成长字符串的时间
+结果:
+decoderune和stringtoslicetune占用70%的时间,因为要支持中文这个无法优化
+速度:3294177 ns/op
+
+v6:
+修改:把v2中的数据增加到v5的程度
+结果:
+stringtoslicetune操作耗时第二
+mapxxx:耗时第一
+速度:9050037 ns/op
+
+最终结论:
+数据量小v2 map版本最快
+数据量大v5的slice最快
+
+
+编程结论:
+虽然v5的slice版本快但是程序不容易理解还是要用v2的map版本
+因为一个系统的瓶颈一般在IO输入输出上

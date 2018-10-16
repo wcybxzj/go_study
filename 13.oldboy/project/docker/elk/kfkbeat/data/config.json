@@ -1,0 +1,12 @@
+{
+  "IsDebug": false,
+  "SaveLog": false,
+  "SleepTime": 3000,
+  "ZkHost": "zookeeper:2181",
+  "Topic": "app-logs",
+  "Key": "appLogs",
+  "BeatName": "apibeat-logs",
+  "ReIndex": false,
+  "ConsumerGroup": "app-logs-consumer-group",
+  "ElasticSearch": "http://elasticsearch:9200"
+}

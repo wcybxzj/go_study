@@ -1,0 +1,34 @@
+1.vim版本vim8
+curl -L https://copr.fedorainfracloud.org/coprs/mcepl/vim8/repo/epel-7/mcepl-vim8-epel-7.repo -o /etc/yum.repos.d/mcepl-vim8-epel-7.repo
+yum remove vim* -y
+yum install vim -y
+
+2.bundle
+mkdir ~/.vim/bundle
+git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+3.vim插件
+vim ~/.vimrc:
+Plugin 'fatih/vim-go'
+"防止vim-go ctrl+x+o 代码补全的时候上边出scratch window烦人
+set completeopt=menu
+在Vim内执行: PluginInstall
+
+4.防止出错
+说什么ymcd server shut down
+/root/.vim/bundle/YouCompleteMe
+./install.py
+
+5.gocode
+go get -u github.com/nsf/gocode
+
+cd $GOPATH/src/github.com/nsf/gocode/vim
+./update.bash
+./symlink.sh
+gocode set propose-builtins true
+gocode set lib-path "/root/www/go_www/pkg/linux_amd64"
+gocode set 查看
+
+gocode set里面的两个参数的含意说明：
+propose-builtins：是否自动提示Go的内置函数、类型和常量，默认为false，不提示。
+lib-path:默认情况下，gocode只会搜索**$GOPATH/pkg/$GOOS_$GOARCH** 和 $GOROOT/pkg/$GOOS_$GOARCH目录下的包，当然这个设置就是可以设置我们额外的lib能访问的路径
