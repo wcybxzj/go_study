@@ -1,0 +1,32 @@
+2018/10/18 14:43:00.982 [D] [init.go:131]  key[0] valud[key:"/oldboy/backend/secskill/product" create_revision:55 mod_revision:55 version:1 value:"[{\"ProductId\":1029,\"StartTime\":1505008800,\"EndTime\":1505012400,\"Status\":0,\"Total\":1000,\"Left\":1000},{\"ProductId\":1027,\"StartTime\":1505008800,\"EndTime\":1505012400,\"Status\":0,\"Total\":2000,\"Left\":1000}]" ]
+2018/10/18 14:43:00.983 [D] [init.go:131]  sec info conf is [[{1029 1505008800 1505012400 0 1000 1000} {1027 1505008800 1505012400 0 2000 1000}]]
+2018/10/18 14:43:00.983 [D] [init.go:137]  init service succ, config:&{{127.0.0.1:6379 64 0 300} {127.0.0.1:2379 5 /oldboy/backend/secskill/ /oldboy/backend/secskill/product} ./logs/sec.log debug map[1029:0xc000038990 1027:0xc000038990] {{0 0} 0 0 0 0}}
+2018/10/18 14:43:00.983 [I] [main.go:17]  init sec succ
+2018/10/18 14:43:00.983 [D] [asm_amd64.s:1333]  begin watch key:/oldboy/backend/secskill/product
+2018/10/18 14:43:01.031 [I] [asm_amd64.s:1333]  http server Running on http://0.0.0.0:9091
+2018/10/18 14:44:09.914 [D] [init.go:131]  key[0] valud[key:"/oldboy/backend/secskill/product" create_revision:55 mod_revision:55 version:1 value:"[{\"ProductId\":1029,\"StartTime\":1505008800,\"EndTime\":1505012400,\"Status\":0,\"Total\":1000,\"Left\":1000},{\"ProductId\":1027,\"StartTime\":1505008800,\"EndTime\":1505012400,\"Status\":0,\"Total\":2000,\"Left\":1000}]" ]
+2018/10/18 14:44:09.914 [D] [init.go:131]  sec info conf is [[{1029 1505008800 1505012400 0 1000 1000} {1027 1505008800 1505012400 0 2000 1000}]]
+2018/10/18 14:44:09.914 [D] [init.go:137]  init service succ, config:&{{127.0.0.1:6379 64 0 300} {127.0.0.1:2379 5 /oldboy/backend/secskill/ /oldboy/backend/secskill/product} ./logs/sec.log debug map[1029:0xc0000b2810 1027:0xc0000b2810] {{0 0} 0 0 0 0}}
+2018/10/18 14:44:09.914 [I] [main.go:17]  init sec succ
+2018/10/18 14:44:09.915 [D] [asm_amd64.s:1333]  begin watch key:/oldboy/backend/secskill/product
+2018/10/18 14:44:09.917 [I] [asm_amd64.s:1333]  http server Running on http://0.0.0.0:9091
+2018/10/18 14:44:17.174 [D] [init.go:131]  key[0] valud[key:"/oldboy/backend/secskill/product" create_revision:55 mod_revision:55 version:1 value:"[{\"ProductId\":1029,\"StartTime\":1505008800,\"EndTime\":1505012400,\"Status\":0,\"Total\":1000,\"Left\":1000},{\"ProductId\":1027,\"StartTime\":1505008800,\"EndTime\":1505012400,\"Status\":0,\"Total\":2000,\"Left\":1000}]" ]
+2018/10/18 14:44:17.174 [D] [init.go:131]  sec info conf is [[{1029 1505008800 1505012400 0 1000 1000} {1027 1505008800 1505012400 0 2000 1000}]]
+2018/10/18 14:44:17.175 [D] [init.go:137]  init service succ, config:&{{127.0.0.1:6379 64 0 300} {127.0.0.1:2379 5 /oldboy/backend/secskill/ /oldboy/backend/secskill/product} ./logs/sec.log debug map[1029:0xc0002d40f0 1027:0xc0002d40f0] {{0 0} 0 0 0 0}}
+2018/10/18 14:44:17.175 [I] [main.go:17]  init sec succ
+2018/10/18 14:44:17.177 [D] [asm_amd64.s:1333]  begin watch key:/oldboy/backend/secskill/product
+2018/10/18 14:44:17.178 [I] [asm_amd64.s:1333]  http server Running on http://0.0.0.0:9091
+2018/10/18 14:49:21.243 [D] [server.go:2741]  |   192.168.1.34|[43m 404 [0m|   1.862729ms| nomatch|[44m GET     [0m /app/apply
+2018/10/18 14:49:21.519 [D] [server.go:2741]  |   192.168.1.34|[43m 404 [0m|     130.33µs| nomatch|[44m GET     [0m /favicon.ico
+2018/10/18 14:49:25.346 [D] [server.go:2741]  |   192.168.1.34|[43m 404 [0m|    402.812µs| nomatch|[44m GET     [0m /  
+2018/10/18 14:49:34.013 [D] [server.go:2741]  |   192.168.1.34|[42m 200 [0m|    170.875µs|   match|[44m GET     [0m /seckill   r:/seckill
+2018/10/18 14:49:38.523 [E] [asm_amd64.s:522]  invalid request, get product_id failed, err:strconv.Atoi: parsing "": invalid syntax
+2018/10/18 14:49:38.523 [D] [server.go:2741]  |   192.168.1.34|[42m 200 [0m|    280.728µs|   match|[44m GET     [0m /secinfo   r:/secinfo
+2018/10/18 14:53:56.403 [D] [server.go:2741]  |   192.168.1.34|[42m 200 [0m|    120.316µs|   match|[44m GET     [0m /seckill   r:/seckill
+2018/10/18 14:54:05.580 [E] [asm_amd64.s:522]  invalid request, get product_id failed, err:strconv.Atoi: parsing "": invalid syntax
+2018/10/18 14:54:05.580 [D] [server.go:2741]  |   192.168.1.34|[42m 200 [0m|    451.195µs|   match|[44m GET     [0m /secinfo   r:/secinfo
+2018/10/18 15:33:36.090 [D] [server.go:2741]  |   192.168.1.34|[42m 200 [0m|    316.526µs|   match|[44m GET     [0m /secinfo   r:/secinfo
+2018/10/18 15:33:41.599 [D] [server.go:2741]  |   192.168.1.34|[42m 200 [0m|    132.632µs|   match|[44m GET     [0m /secinfo   r:/secinfo
+2018/10/18 16:42:00.908 [D] [asm_amd64.s:1333]  get config from etcd, PUT "/oldboy/backend/secskill/product" : "[{\"ProductId\":1029,\"StartTime\":1505008800,\"EndTime\":1505012400,\"Status\":0,\"Total\":1000,\"Left\":1000},{\"ProductId\":1030,\"StartTime\":1505008800,\"EndTime\":1505012400,\"Status\":0,\"Total\":2000,\"Left\":1000}]"
+
+2018/10/18 16:42:00.908 [D] [asm_amd64.s:1333]  get config from etcd succ, [{1029 1505008800 1505012400 0 1000 1000} {1030 1505008800 1505012400 0 2000 1000}]

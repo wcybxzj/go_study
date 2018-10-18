@@ -2,7 +2,6 @@ package service
 
 import (
 	"fmt"
-
 	"github.com/astaxie/beego/logs"
 )
 
@@ -16,7 +15,6 @@ func InitService(serviceConf *SecSkillConf) {
 }
 
 func SecInfo(productId int) (data map[string]interface{}, code int, err error) {
-
 	secKillConf.RWSecProductLock.RLock()
 	defer secKillConf.RWSecProductLock.RUnlock()
 

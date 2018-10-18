@@ -1,0 +1,6 @@
+2018/10/18 14:27:05.463 [D] [init.go:131]  key[0] valud[key:"/oldboy/backend/secskill/product" create_revision:55 mod_revision:55 version:1 value:"[{\"ProductId\":1029,\"StartTime\":1505008800,\"EndTime\":1505012400,\"Status\":0,\"Total\":1000,\"Left\":1000},{\"ProductId\":1027,\"StartTime\":1505008800,\"EndTime\":1505012400,\"Status\":0,\"Total\":2000,\"Left\":1000}]" ]
+2018/10/18 14:27:05.464 [D] [init.go:131]  sec info conf is [[{1029 1505008800 1505012400 0 1000 1000} {1027 1505008800 1505012400 0 2000 1000}]]
+2018/10/18 14:27:05.464 [D] [init.go:137]  init service succ, config:&{{127.0.0.1:6379 64 0 300} {127.0.0.1:2379 5 /oldboy/backend/secskill/ /oldboy/backend/secskill/product} ./logs/sec.log debug map[1027:0xc0002d6090 1029:0xc0002d6090] {{0 0} 0 0 0 0}}
+2018/10/18 14:27:05.464 [I] [main.go:17]  init sec succ
+2018/10/18 14:27:05.465 [D] [asm_amd64.s:1333]  begin watch key:/oldboy/backend/secskill/product
+2018/10/18 14:27:05.497 [I] [asm_amd64.s:1333]  http server Running on http://0.0.0.0:9091

@@ -3,17 +3,18 @@ package main
 import (
 	"github.com/astaxie/beego"
 	_ "go_study/13.oldboy/seckill/day14/SecProxy/router"
+	"go_study/13.oldboy/seckill/day14/SecProxy/conf"
 )
 
 func main() {
 
-	err := initConfig()
+	err := conf.InitConfig()
 	if err != nil {
 		panic(err)
 		return
 	}
 
-	err = initSec()
+	err = conf.InitSec()
 	if err != nil {
 		panic(err)
 		return

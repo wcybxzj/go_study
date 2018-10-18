@@ -31,5 +31,5 @@ type SecProductInfoConf struct {
 	EndTime   int
 	Status    int
 	Total     int
-	Left      int
+	Left      int //剩余量
 }

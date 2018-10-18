@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/coreos/etcd/clientv3"
+	"go.etcd.io/etcd/clientv3"
 )
 
 const (
@@ -40,8 +40,8 @@ func SetLogConfToEtcd() {
 		SecInfoConfArr,
 		SecInfoConf{
 			ProductId: 1029,
-			StartTime: 1505008800,
-			EndTime:   1505012400,
+			StartTime: 1505008800, //活动开始时间
+			EndTime:   1505012400, //活动结束时间
 			Status:    0,
 			Total:     1000,
 			Left:      1000,
@@ -50,7 +50,7 @@ func SetLogConfToEtcd() {
 	SecInfoConfArr = append(
 		SecInfoConfArr,
 		SecInfoConf{
-			ProductId: 1027,
+			ProductId: 1030,
 			StartTime: 1505008800,
 			EndTime:   1505012400,
 			Status:    0,

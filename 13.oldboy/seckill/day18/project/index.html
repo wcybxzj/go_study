@@ -1,0 +1,16 @@
+<html>
+        <head>
+        </head>
+        <body>
+            {{range .}}
+                {{if gt .Age 18}}
+                <p>hello, old man, {{.Name}}</p>
+                {{else}}
+                <p>hello,young man, {{.}}</p>
+                {{end}}
+                {{with .Name}}
+                <p> hello, this is with {{.}}</p>
+                {{end}}
+            {{end}}
+        </body>
+</html>

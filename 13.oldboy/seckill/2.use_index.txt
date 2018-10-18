@@ -1,0 +1,17 @@
+1.启动redis
+
+2.启动etcd
+
+3.向etcd插入秒杀信息
+./SecProxy/tools/SetConf/main.go
+
+4.启动接入层:
+idea或者goland
+编译参数:
+type:file
+Output Directory:/root/www/go_www/src/go_study/13.oldboy/seckill/day14/SecProxy
+./SecProxy/main/main.go
+
+5.测试:
+http://192.168.1.177:9091/secinfo?product_id=1027
+http://192.168.1.177:9091/secinfo?product_id=1029
