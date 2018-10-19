@@ -4,3 +4,4 @@ go_build_main_go
 small.in
 web_admin
 *.exe
+*.log
