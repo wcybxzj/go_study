@@ -1,9 +1,8 @@
 package main
 
 import (
-	_ "go_dev/day14/SecKill/SecProxy/router"
-
 	"github.com/astaxie/beego"
+	_ "go_study/13.oldboy/seckill/day15/SecKill/SecProxy/router"
 )
 
 func main() {

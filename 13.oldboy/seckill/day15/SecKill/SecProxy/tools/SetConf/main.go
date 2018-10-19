@@ -4,9 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"go.etcd.io/etcd/clientv3"
 	"time"
-
-	"github.com/coreos/etcd/clientv3"
 )
 
 const (

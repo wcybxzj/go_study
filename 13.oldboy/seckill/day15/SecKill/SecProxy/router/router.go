@@ -1,10 +1,9 @@
 package router
 
 import (
-	"go_dev/day14/SecKill/SecProxy/controller"
-
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
+	"go_study/13.oldboy/seckill/day15/SecKill/SecProxy/controller"
 )
 
 func init() {
