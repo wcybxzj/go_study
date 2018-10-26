@@ -1,6 +1,8 @@
 1.启动redis
+./src/redis-server redis.conf
 
 2.启动etcd
+./etcd
 
 3.向etcd插入秒杀信息
 ./SecProxy/tools/SetConf/main.go

@@ -1,2 +1,11 @@
 秒杀列表页:
+
 秒杀详情页:
+
+秒杀逻辑层核心-秒杀接口:
+/seckill?product_id=20&source=android&authcode=xx&time=xx&nance=xx
+商品:product_id=20&
+源:source=android&
+验证码:authcode=xx&
+当前时间:time=xx&
+随机数:nance=xx
