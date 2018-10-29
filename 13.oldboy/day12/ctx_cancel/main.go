@@ -39,6 +39,8 @@ func test() {
 		}
 	}
 }
+
+//先执行cancel然后才执行,go协程的ctx.Done
 func main() {
 	test()
 	time.Sleep(time.Hour)

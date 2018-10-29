@@ -43,7 +43,7 @@ type SecSkillConf struct {
 	LogPath           string
 	LogLevel          string
 	SecProductInfoMap map[int]*SecProductInfoConf
-	RWSecProductLock  sync.RWMutex
+	RWSecProductLock  sync.RWMutex //秒杀锁
 	CookieSecretKey   string
 
 	ReferWhiteList []string
@@ -58,7 +58,7 @@ type SecSkillConf struct {
 
 	secLimitMgr *SecLimitMgr
 
-	RWBlackLock                  sync.RWMutex
+	RWBlackLock                  sync.RWMutex //防作弊锁
 	WriteProxy2LayerGoroutineNum int
 	ReadProxy2LayerGoroutineNum  int
 
@@ -93,7 +93,7 @@ type SecRequest struct {
 	Nance         string
 	UserId        int
 	UserAuthSign  string
-	AccessTime    time.Time
+	AccessTime    time.Time //访问时间可用于1秒只能访问1次
 	ClientAddr    string
 	ClientRefence string
 	CloseNotify   <-chan bool

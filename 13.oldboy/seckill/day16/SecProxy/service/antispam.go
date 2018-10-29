@@ -10,11 +10,10 @@ import (
 type SecLimitMgr struct {
 	UserLimitMap map[int]*Limit
 	IpLimitMap   map[string]*Limit
-	lock         sync.Mutex
+	lock         sync.Mutex //秒杀限制锁
 }
 
 func antiSpam(req *SecRequest) (err error) {
-
 	_, ok := secKillConf.idBlackMap[req.UserId]
 	if ok {
 		err = fmt.Errorf("invalid request")

@@ -9,11 +9,27 @@
 
 4.启动接入层:
 idea或者goland
+
 编译参数:
 type:file
-Output Directory:/root/www/go_www/src/go_study/13.oldboy/seckill/day14/SecProxy
-./SecProxy/main/main.go
+
+Output Directory:
+/root/www/go_www/src/go_study/13.oldboy/seckill/day14/SecProxy
+或者
+Output Directory:
+/root/www/go_www/src/go_study/13.oldboy/seckill/day15/SecProxy
+或者
+Output Directory:
+/root/www/go_www/src/go_study/13.oldboy/seckill/myday15/SecProxy
+或者
+Output Directory:
+/root/www/go_www/src/go_study/13.oldboy/seckill/day16/SecProxy
 
 5.测试:
-http://192.168.1.177:9091/secinfo?product_id=1027
+列表页:
+http://192.168.1.177:9091/secinfo
+内容页:
 http://192.168.1.177:9091/secinfo?product_id=1029
+秒杀接口:
+http://192.168.1.177:9091/seckill?product_id=1029&source=android&authcode=xxx&time=xxx&nance=xxx
+

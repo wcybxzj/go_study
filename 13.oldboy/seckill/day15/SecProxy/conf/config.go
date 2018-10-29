@@ -1,4 +1,4 @@
-package main
+package conf
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ var (
 	}
 )
 
-func initConfig() (err error) {
+func InitConfig() (err error) {
 	redisBlackAddr := beego.AppConfig.String("redis_black_addr")
 	etcdAddr := beego.AppConfig.String("etcd_addr")
 

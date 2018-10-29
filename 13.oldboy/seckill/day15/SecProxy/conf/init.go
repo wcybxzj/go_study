@@ -1,17 +1,15 @@
-package main
+package conf
 
 import (
 	"encoding/json"
 	"fmt"
-	"go_study/13.oldboy/seckill/day15/SecKill/SecProxy/service"
-	"time"
-
-	"golang.org/x/net/context"
-
 	"github.com/astaxie/beego/logs"
-	etcd_client "github.com/coreos/etcd/clientv3"
-	"github.com/coreos/etcd/mvcc/mvccpb"
 	"github.com/garyburd/redigo/redis"
+	etcd_client "go.etcd.io/etcd/clientv3"
+	"go.etcd.io/etcd/mvcc/mvccpb"
+	"go_study/13.oldboy/seckill/day15/SecKill/SecProxy/service"
+	"golang.org/x/net/context"
+	"time"
 )
 
 var (
@@ -111,7 +109,7 @@ func loadSecConf() (err error) {
 	return
 }
 
-func initSec() (err error) {
+func InitSec() (err error) {
 
 	err = initLogger()
 	if err != nil {

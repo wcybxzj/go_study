@@ -2,7 +2,7 @@ package controller
 
 import (
 	"fmt"
-	"go_dev/day14/SecKill/SecProxy/service"
+	"go_study/13.oldboy/seckill/day16/SecProxy/service"
 	"strings"
 	"time"
 

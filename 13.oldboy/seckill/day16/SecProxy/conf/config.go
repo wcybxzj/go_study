@@ -1,13 +1,11 @@
-package main
+package conf
 
 import (
 	"fmt"
-	"go_dev/day14/SecKill/SecProxy/service"
-
-	"strings"
-
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
+	"go_study/13.oldboy/seckill/day16/SecProxy/service"
+	"strings"
 )
 
 var (
@@ -16,7 +14,7 @@ var (
 	}
 )
 
-func initConfig() (err error) {
+func InitConfig() (err error) {
 	redisBlackAddr := beego.AppConfig.String("redis_black_addr")
 	etcdAddr := beego.AppConfig.String("etcd_addr")
 

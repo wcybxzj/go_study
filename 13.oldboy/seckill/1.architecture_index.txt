@@ -40,14 +40,30 @@ if(calcAuth==userAuth){
 ===========================================================================
 功能2:秒级请求限制:
 service/antispam.go
-//方法1计数:
-func Count(){
-    //TODO
+
+type SecLimit struct{
+    count int //计数
+    curTime int64 //时间
 }
 
-fuc Check():检查计数
+//计数:
+func (p *SecLimit)Count(nowTime int64) (curCount int){
+    if p.curTime != nowTime{//如果传入的时间不是限速记录的当前时间
+        p.count=1
+        p.curTime= nowTime
+    }else{
+        p.count++
+    }
+    return p.count
+}
 
-每秒限制最多一次
+//检查计数:
+func (p *SecLimit)Check(nowTime int64) {
+    if p.curTime != nowTime{//如果传入的时间不是限速记录的当前时间
+        return 0
+    }
+    return p.count
+}
 
 ===========================================================================
 功能2:http-server返回json:

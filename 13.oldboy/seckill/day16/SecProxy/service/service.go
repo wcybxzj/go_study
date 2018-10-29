@@ -128,8 +128,8 @@ func userCheck(req *SecRequest) (err error) {
 	return
 }
 
+//和php完全不同,大量协程如果并发,都会走这一个代码
 func SecKill(req *SecRequest) (data map[string]interface{}, code int, err error) {
-
 	secKillConf.RWSecProductLock.RLock()
 	defer secKillConf.RWSecProductLock.RUnlock()
 
