@@ -2,12 +2,11 @@ package main
 
 import (
 	"github.com/astaxie/beego"
-	_ "go_study/13.oldboy/seckill/day14/SecProxy/router"
 	"go_study/13.oldboy/seckill/day14/SecProxy/conf"
+	_ "go_study/13.oldboy/seckill/day14/SecProxy/router"
 )
 
 func main() {
-
 	err := conf.InitConfig()
 	if err != nil {
 		panic(err)

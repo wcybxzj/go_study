@@ -4,19 +4,10 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"go_study/13.oldboy/seckill/myday15/SecProxy/service"
-	"strconv"
-	"time"
-	"strings"
-	"fmt"
 )
 
 type SkillController struct {
 	beego.Controller
-}
-
-func (p *SkillController) SecKill() {
-	p.Data["json"] = "sec kill"
-	p.ServeJSON()
 }
 
 func (p *SkillController) SecInfo() {
@@ -33,7 +24,7 @@ func (p *SkillController) SecInfo() {
 
 	if err != nil {
 		data, code, err := service.SecInfoList()
-		if err != nil{
+		if err != nil {
 			result["code"] = code
 			result["message"] = err.Error()
 
@@ -55,8 +46,6 @@ func (p *SkillController) SecInfo() {
 		result["data"] = data
 	}
 }
-
-
 
 func (p *SkillController) SecKill() {
 	productId, err := p.GetInt("product_id")

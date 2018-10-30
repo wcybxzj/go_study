@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"time"
-	)
+)
 
 var (
 	secKillConf *SecSkillConf
@@ -65,26 +65,24 @@ func SecInfoById(productId int) (data map[string]interface{}, code int, err erro
 
 	now := time.Now().Unix()
 
-
-	if now - v.StartTime < 0 {
+	if now-v.StartTime < 0 {
 		start = false
 		end = false
-		status ="sec kill is not start"
+		status = "sec kill is not start"
 	}
 
-
-	if now - v.StartTime > 0 {
+	if now-v.StartTime > 0 {
 		start = true
 		end = false
 	}
 
-	if now - v.EndTime > 0 {
+	if now-v.EndTime > 0 {
 		start = false
 		end = true
-		status ="sec kill is already end"
+		status = "sec kill is already end"
 	}
 
-	if v.Status == ProductStatusForceSaleOut || v.Status == ProductStatusSaleOut{
+	if v.Status == ProductStatusForceSaleOut || v.Status == ProductStatusSaleOut {
 		start = false
 		end = true
 		status = "Product is sale out"
@@ -99,7 +97,7 @@ func SecInfoById(productId int) (data map[string]interface{}, code int, err erro
 	return
 }
 
-func SecKill(req *SecRequest) (data map[string]interface{}, code int, err error) {
+func SecKill(product_id int, source, authcode, sec_time, nance string) (data map[string]interface{}, code int, err error) {
 
 	secKillConf.RWSecProductLock.RLock()
 	defer secKillConf.RWSecProductLock.RUnlock()
@@ -162,6 +160,5 @@ func SecKill(req *SecRequest) (data map[string]interface{}, code int, err error)
 	//	return
 	//}
 	//
-	//return
+	return
 }
-
