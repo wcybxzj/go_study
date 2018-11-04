@@ -13,7 +13,7 @@ service.go/SecInfo()
 错误的现象访问商品列表,两条都是1027的数据 应该是1条是1027的数据,1条是1029的数据
 
 SecProxy/init.go/updateSecProductInfo()
-循环中变量的v,一直不会改变,所有tmp的值是最后一个v
+for循环中变量的v地址一直不会改变,所有tmp的值是最后一个v
 bug:
 for _, v := range secProductInfo {
     tmp[v.ProductId] = &v
