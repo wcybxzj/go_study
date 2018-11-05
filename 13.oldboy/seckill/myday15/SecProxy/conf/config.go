@@ -80,5 +80,15 @@ func InitConfig() (err error) {
 	secKillConf.LogPath = beego.AppConfig.String("log_path")
 	secKillConf.LogLevel = beego.AppConfig.String("log_level")
 
+	secKillConf.CookieSecretKey = beego.AppConfig.String("cookie_secretkey")
+
+	secLimit, err := beego.AppConfig.Int("user_sec_access_limit")
+	if err != nil {
+		err = fmt.Errorf("init config failed, read user_sec_access_limit error:%v", err)
+		return
+	}
+
+	secKillConf.UserSecAccessLimit = secLimit
+
 	return
 }

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"crypto/md5"
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"time"
@@ -97,7 +98,33 @@ func SecInfoById(productId int) (data map[string]interface{}, code int, err erro
 	return
 }
 
-func SecKill(product_id int, source, authcode, sec_time, nance string) (data map[string]interface{}, code int, err error) {
+func userCheck(req *SecRequest) (err error) {
+
+	//found := false
+	//for _, refer := range secKillConf.ReferWhiteList {
+	//	if refer == req.ClientRefence {
+	//		found = true
+	//		break
+	//	}
+	//}
+	//
+	//if !found {
+	//	err = fmt.Errorf("invalid request")
+	//	logs.Warn("user[%d] is reject by refer, req[%v]", req.UserId, req)
+	//	return
+	//}
+	//
+	authData := fmt.Sprintf("%d:%s", req.UserId, secKillConf.CookieSecretKey)
+	authSign := fmt.Sprintf("%x", md5.Sum([]byte(authData)))
+
+	if authSign != req.UserAuthSign {
+		err = fmt.Errorf("invalid user cookie auth")
+		return
+	}
+	return
+}
+
+func SecKill(req *SecRequest) (data map[string]interface{}, code int, err error) {
 
 	secKillConf.RWSecProductLock.RLock()
 	defer secKillConf.RWSecProductLock.RUnlock()
@@ -108,14 +135,14 @@ func SecKill(product_id int, source, authcode, sec_time, nance string) (data map
 	//	logs.Warn("userId[%d] invalid, check failed, req[%v]", req.UserId, req)
 	//	return
 	//}
-	//
-	//err = antiSpam(req)
-	//if err != nil {
-	//	code = ErrUserServiceBusy
-	//	logs.Warn("userId[%d] invalid, check failed, req[%v]", req.UserId, req)
-	//	return
-	//}
-	//
+
+	err = antiSpam(req)
+	if err != nil {
+		code = ErrUserServiceBusy
+		logs.Warn("userId[%d] invalid, check failed, req[%v]", req.UserId, req)
+		return
+	}
+
 	//data, code, err = SecInfoById(req.ProductId)
 	//if err != nil {
 	//	logs.Warn("userId[%d] secInfoBy Id failed, req[%v]", req.UserId, req)

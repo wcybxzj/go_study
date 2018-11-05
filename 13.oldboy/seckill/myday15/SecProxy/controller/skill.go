@@ -4,6 +4,8 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"go_study/13.oldboy/seckill/myday15/SecProxy/service"
+	"strconv"
+	"time"
 )
 
 type SkillController struct {
@@ -70,30 +72,31 @@ func (p *SkillController) SecKill() {
 	secTime := p.GetString("time")
 	nance := p.GetString("nance")
 
-	//secRequest := service.NewSecRequest()
-	//secRequest.AuthCode = authcode
-	//secRequest.Nance = nance
-	//secRequest.ProductId = productId
-	//secRequest.SecTime = secTime
-	//secRequest.Source = source
-	//secRequest.UserAuthSign = p.Ctx.GetCookie("userAuthSign")
-	//secRequest.UserId, _ = strconv.Atoi(p.Ctx.GetCookie("userId"))
-	//secRequest.AccessTime = time.Now()
+	secRequest := &service.SecRequest{}
+	secRequest.AuthCode = authcode
+	secRequest.Nance = nance
+	secRequest.ProductId = productId
+	secRequest.SecTime = secTime
+	secRequest.Source = source
+	secRequest.UserAuthSign = p.Ctx.GetCookie("userAuthSign")
+	secRequest.UserId, err = strconv.Atoi(p.Ctx.GetCookie("userId"))
+	secRequest.AccessTime = time.Now()
+
 	//if len(p.Ctx.Request.RemoteAddr) > 0 {
 	//	secRequest.ClientAddr = strings.Split(p.Ctx.Request.RemoteAddr, ":")[0]
 	//}
 	//
 	//secRequest.ClientRefence = p.Ctx.Request.Referer()
 	//secRequest.CloseNotify = p.Ctx.ResponseWriter.CloseNotify()
-	//
-	//logs.Debug("client request:[%v]", secRequest)
+
+	logs.Debug("client request:[%v]", secRequest)
 	//if err != nil {
 	//	result["code"] = service.ErrInvalidRequest
 	//	result["message"] = fmt.Sprintf("invalid cookie:userId")
 	//	return
 	//}
-	//
-	data, code, err := service.SecKill(productId, source, authcode, secTime, nance)
+
+	data, code, err := service.SecKill(secRequest)
 	if err != nil {
 		result["code"] = code
 		result["message"] = err.Error()
