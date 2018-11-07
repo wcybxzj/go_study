@@ -103,7 +103,7 @@ func SecInfoById(productId int) (data map[string]interface{}, code int, err erro
 }
 
 func userCheck(req *SecRequest) (err error) {
-
+	//白名单验证
 	found := false
 	for _, refer := range secKillConf.ReferWhiteList {
 		if refer == req.ClientRefence {

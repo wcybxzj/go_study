@@ -1,9 +1,9 @@
 package service
 
-//type Limit struct {
-//	secLimit TimeLimit
-//	minLimit TimeLimit
-//}
+type Limit struct {
+	secLimit TimeLimit
+	minLimit TimeLimit
+}
 
 type SecLimit struct {
 	count   int

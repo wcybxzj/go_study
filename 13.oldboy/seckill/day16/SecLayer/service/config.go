@@ -13,14 +13,15 @@ var (
 )
 
 type SecProductInfoConf struct {
-	ProductId         int
-	StartTime         int64
-	EndTime           int64
-	Status            int
-	Total             int
-	Left              int
+	ProductId int
+	StartTime int64
+	EndTime   int64
+	Status    int
+	Total     int
+	Left      int
+	//每个人的购买限制数量
 	OnePersonBuyLimit int
-	BuyRate           float64
+	BuyRate           float64 //抽奖概率
 	//每秒最多能卖多少个
 	SoldMaxLimit int
 	//限速控制

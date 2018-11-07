@@ -164,7 +164,6 @@ func HandleUser() {
 			logs.Warn("send to response chan timeout, res:%v", res)
 			break
 		}
-
 	}
 	return
 }
@@ -187,6 +186,7 @@ func HandleSecKill(req *SecRequest) (res *SecResponse, err error) {
 		return
 	}
 
+	//当前这1秒卖了多少,如果这1秒卖出超过了限制就不允许购买了
 	now := time.Now().Unix()
 	alreadySoldCount := product.secLimit.Check(now)
 	if alreadySoldCount >= product.SoldMaxLimit {
@@ -194,6 +194,7 @@ func HandleSecKill(req *SecRequest) (res *SecResponse, err error) {
 		return
 	}
 
+	//对每个用户的购买数量进行限制
 	secLayerContext.HistoryMapLock.Lock()
 	userHistory, ok := secLayerContext.HistoryMap[req.UserId]
 	if !ok {
@@ -212,6 +213,7 @@ func HandleSecKill(req *SecRequest) (res *SecResponse, err error) {
 		return
 	}
 
+	//判断商品是否售罄
 	curSoldCount := secLayerContext.productCountMgr.Count(req.ProductId)
 	if curSoldCount >= product.Total {
 		res.Code = ErrSoldout
@@ -219,17 +221,23 @@ func HandleSecKill(req *SecRequest) (res *SecResponse, err error) {
 		return
 	}
 
+	//只有大于当前概率值才能购买
 	curRate := rand.Float64()
 	if curRate > product.BuyRate {
 		res.Code = ErrRetry
 		return
 	}
 
+	//用户购买数量加1(有问题)
 	userHistory.Add(req.ProductId, 1)
+	//商品卖出总数加1
 	secLayerContext.productCountMgr.Add(req.ProductId, 1)
 
 	//用户id&商品id&当前时间&密钥
 	res.Code = ErrSecKillSucc
+
+	//这个token返回给浏览器, 让用户可以去使用购物车
+	//通过加密保证token无法伪造
 	tokenData := fmt.Sprintf("userId=%d&productId=%d&timestamp=%d&security=%s",
 		req.UserId, req.ProductId, now, secLayerContext.secLayerConf.TokenPasswd)
 

@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"go_dev/day14/SecKill/SecLayer/service"
 
 	"github.com/astaxie/beego/logs"
+	"go_study/13.oldboy/seckill/day16/SecLayer/service"
 )
 
 func main() {

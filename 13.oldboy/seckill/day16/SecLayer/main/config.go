@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"go_dev/day14/SecKill/SecLayer/service"
 	"strings"
 
 	"github.com/astaxie/beego/config"
 	"github.com/astaxie/beego/logs"
+	"go_study/13.oldboy/seckill/day16/SecLayer/service"
 )
 
 var (

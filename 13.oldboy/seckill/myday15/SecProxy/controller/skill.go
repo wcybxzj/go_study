@@ -5,6 +5,7 @@ import (
 	"github.com/astaxie/beego/logs"
 	"go_study/13.oldboy/seckill/myday15/SecProxy/service"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -82,14 +83,15 @@ func (p *SkillController) SecKill() {
 	secRequest.UserId, err = strconv.Atoi(p.Ctx.GetCookie("userId"))
 	secRequest.AccessTime = time.Now()
 
-	//if len(p.Ctx.Request.RemoteAddr) > 0 {
-	//	secRequest.ClientAddr = strings.Split(p.Ctx.Request.RemoteAddr, ":")[0]
-	//}
-	//
-	//secRequest.ClientRefence = p.Ctx.Request.Referer()
-	//secRequest.CloseNotify = p.Ctx.ResponseWriter.CloseNotify()
+	//客户端地址
+	if len(p.Ctx.Request.RemoteAddr) > 0 {
+		secRequest.ClientAddr = strings.Split(p.Ctx.Request.RemoteAddr, ":")[0]
+	}
+	//log.Debug("======client request:[%v]=======", secRequest.ClientAddr)
 
-	logs.Debug("client request:[%v]", secRequest)
+	secRequest.ClientRefence = p.Ctx.Request.Referer()
+	secRequest.CloseNotify = p.Ctx.ResponseWriter.CloseNotify()
+
 	//if err != nil {
 	//	result["code"] = service.ErrInvalidRequest
 	//	result["message"] = fmt.Sprintf("invalid cookie:userId")

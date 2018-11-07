@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/garyburd/redigo/redis"
 	"sync"
 	"time"
 )
@@ -29,6 +30,10 @@ type EtcdConf struct {
 }
 
 type SecSkillConf struct {
+	RedisBlackConf       RedisConf
+	RedisProxy2LayerConf RedisConf
+	RedisLayer2ProxyConf RedisConf
+
 	RedisConf          RedisConf
 	EtcdConf           EtcdConf
 	LogPath            string
@@ -37,6 +42,31 @@ type SecSkillConf struct {
 	RWSecProductLock   sync.RWMutex
 	CookieSecretKey    string
 	UserSecAccessLimit int //用户每秒访问频率
+	ReferWhiteList     []string
+	IPSecAccessLimit   int
+
+	//AccessLimitConf      AccessLimitConf
+
+	blackRedisPool       *redis.Pool //黑名单redis实例
+	proxy2LayerRedisPool *redis.Pool //接入层到逻辑层redis实例
+	layer2ProxyRedisPool *redis.Pool //逻辑层到接入层redis实例
+
+	secLimitMgr *SecLimitMgr
+
+	//黑名单
+	ipBlackMap map[string]bool
+	idBlackMap map[int]bool
+	//操作黑名单map的锁
+	RWBlackLock sync.RWMutex
+
+	//WriteProxy2LayerGoroutineNum int
+	//ReadProxy2LayerGoroutineNum  int
+	//
+	//SecReqChan     chan *SecRequest
+	//SecReqChanSize int
+	//
+	//UserConnMap     map[string]chan *SecResult
+	//UserConnMapLock sync.Mutex
 
 }
 
@@ -58,4 +88,10 @@ type SecRequest struct {
 	UserId       int
 	UserAuthSign string //登录后的cookie
 	AccessTime   time.Time
+
+	ClientAddr    string
+	ClientRefence string
+	CloseNotify   <-chan bool
+
+	//ResultChan chan *SecResult
 }

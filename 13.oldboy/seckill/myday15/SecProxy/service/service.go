@@ -4,6 +4,9 @@ import (
 	"crypto/md5"
 	"fmt"
 	"github.com/astaxie/beego/logs"
+	"github.com/garyburd/redigo/redis"
+	"github.com/prometheus/common/log"
+	"strconv"
 	"time"
 )
 
@@ -13,11 +16,134 @@ var (
 
 func InitService(serviceConf *SecSkillConf) {
 	secKillConf = serviceConf
+	loadIdBlackList()
 	logs.Debug("init service succ, config:%v", secKillConf)
+
+	//initProxy2LayerRedis()
+
+	secKillConf.secLimitMgr = &SecLimitMgr{
+		UserLimitMap: make(map[int]*s, 10000),
+		IpLimitMap:   make(map[string]*Limit, 10000),
+	}
+}
+
+func initBlackRedis() (err error) {
+	secKillConf.blackRedisPool = &redis.Pool{
+		MaxIdle:     secKillConf.RedisBlackConf.RedisMaxIdle,
+		MaxActive:   secKillConf.RedisBlackConf.RedisMaxActive,
+		IdleTimeout: time.Duration(secKillConf.RedisBlackConf.RedisIdleTimeout) * time.Second,
+		Dial: func() (redis.Conn, error) {
+			return redis.Dial("tcp", secKillConf.RedisBlackConf.RedisAddr)
+		},
+	}
+
+	conn := secKillConf.blackRedisPool.Get()
+	defer conn.Close()
+
+	_, err = conn.Do("ping")
+	if err != nil {
+		logs.Error("ping redis failed, err:%v", err)
+		return
+	}
+
+	return
+}
+
+//加载黑名单(全量)
+func loadIdBlackList() (err error) {
+	err = initBlackRedis()
+	if err != nil {
+		log.Error("init black redis, failed, err:%v", err)
+		return
+	}
+
+	conn := secKillConf.blackRedisPool.Get()
+	defer conn.Close()
+
+	//id
+	reply, err := conn.Do("hgetall", "idblacklist")
+	idlist, err := redis.Strings(reply, err)
+	if err != nil {
+		logs.Warn("hget all failed, err:%v", err)
+		return
+	}
+
+	for _, v := range idlist {
+		id, err := strconv.Atoi(v)
+		if err != nil {
+			log.Warn("invalid user id[%v]", id)
+			continue
+		}
+		secKillConf.idBlackMap[id] = true
+	}
+
+	//ip
+	reply, err = conn.Do("hgetall", "ipblacklist")
+	iplist, err := redis.Strings(reply, err)
+	if err != nil {
+		logs.Warn("hget all failed, err:%v", err)
+		return
+	}
+
+	for _, v := range iplist {
+		secKillConf.ipBlackMap[v] = true
+	}
+
+	go SyncIpBlackList()
+	go SyncIdBlackList()
+	return
+}
+
+//同步黑名单数据(redis阻塞获取+批量更新+增量方式)
+//累计获取100个新的黑名单  或者 大于5秒 就会强制更新
+//定时将redis中获取的黑名单同步到服务
+func SyncIpBlackList() {
+	var ipList []string
+	lastTime := time.Now().Unix()
+
+	for {
+		conn := secKillConf.blackRedisPool.Get()
+		defer conn.Close()
+		reply, err := conn.Do("BLPOP", "blackiplist", time.Second)
+		ip, err := redis.String(reply, err)
+		if err != nil {
+			continue
+		}
+
+		curTime := time.Now().Unix()
+		ipList = append(ipList, ip)
+
+		if len(ipList) > 100 || curTime-lastTime > 5 {
+			secKillConf.RWBlackLock.Lock()
+			for _, v := range ipList {
+				secKillConf.ipBlackMap[v] = true
+			}
+			secKillConf.RWBlackLock.Unlock()
+			lastTime = curTime
+			logs.Info("sync ip list from redis succ, ip[%v]", ipList)
+		}
+	}
+}
+
+//和SyncIpBlackList 一样的策略 不写了
+func SyncIdBlackList() {
+	for {
+		conn := secKillConf.blackRedisPool.Get()
+		defer conn.Close()
+		reply, err := conn.Do("BLPOP", "blackidlist", time.Second)
+		id, err := redis.Int(reply, err)
+		if err != nil {
+			continue
+		}
+		secKillConf.RWBlackLock.Lock()
+		secKillConf.idBlackMap[id] = true
+		secKillConf.RWBlackLock.Unlock()
+		logs.Info("sync id list from redis succ, id:%v", id)
+
+	}
 }
 
 func SecInfoList() (data []map[string]interface{}, code int, err error) {
-
 	secKillConf.RWSecProductLock.RLock()
 	defer secKillConf.RWSecProductLock.RUnlock()
 
@@ -70,6 +196,7 @@ func SecInfoById(productId int) (data map[string]interface{}, code int, err erro
 		start = false
 		end = false
 		status = "sec kill is not start"
+		code = ErrActiveNotStart
 	}
 
 	if now-v.StartTime > 0 {
@@ -81,12 +208,14 @@ func SecInfoById(productId int) (data map[string]interface{}, code int, err erro
 		start = false
 		end = true
 		status = "sec kill is already end"
+		code = ErrActiveAlreadyEnd
 	}
 
 	if v.Status == ProductStatusForceSaleOut || v.Status == ProductStatusSaleOut {
 		start = false
 		end = true
 		status = "Product is sale out"
+		code = ErrActiveSaleOut
 	}
 
 	data = make(map[string]interface{})
@@ -143,17 +272,17 @@ func SecKill(req *SecRequest) (data map[string]interface{}, code int, err error)
 		return
 	}
 
-	//data, code, err = SecInfoById(req.ProductId)
-	//if err != nil {
-	//	logs.Warn("userId[%d] secInfoBy Id failed, req[%v]", req.UserId, req)
-	//	return
-	//}
-	//
-	//if code != 0 {
-	//	logs.Warn("userId[%d] secInfoByid failed, code[%d] req[%v]", req.UserId, code, req)
-	//	return
-	//}
-	//
+	data, code, err = SecInfoById(req.ProductId)
+	if err != nil {
+		logs.Warn("userId[%d] secInfoBy Id failed, req[%v]", req.UserId, req)
+		return
+	}
+
+	if code != 0 {
+		logs.Warn("userId[%d] secInfoByid failed, code[%d] req[%v]", req.UserId, code, req)
+		return
+	}
+
 	//userKey := fmt.Sprintf("%s_%s", req.UserId, req.ProductId)
 	//secKillConf.UserConnMap[userKey] = req.ResultChan
 	//

@@ -5,7 +5,7 @@ import (
 )
 
 type ProductCountMgr struct {
-	productCount map[int]int
+	productCount map[int]int //key是商品id value是此商品的销售数量
 	lock         sync.RWMutex
 }
 

@@ -4,6 +4,7 @@ import (
 	"sync"
 )
 
+//用户购买历史,写的有问题吧 用户id呢
 type UserBuyHistory struct {
 	history map[int]int
 	lock    sync.RWMutex

@@ -41,6 +41,7 @@ func InitService(serviceConf *SecSkillConf) (err error) {
 	return
 }
 
+//生成读和写redis的2组goroutine
 func initRedisProcessFunc() {
 	for i := 0; i < secKillConf.WriteProxy2LayerGoroutineNum; i++ {
 		go WriteHandle()
