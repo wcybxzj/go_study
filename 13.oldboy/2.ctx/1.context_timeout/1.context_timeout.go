@@ -1,4 +1,4 @@
-package __ctx
+package main
 
 import (
 	"context"
@@ -82,6 +82,7 @@ func test2() {
 	case res := <-c:
 		fmt.Printf("Server Response:%v", res)
 	}
+	fmt.Println("will see it!")
 
 	//time.Sleep(time.Second * 10)
 }
