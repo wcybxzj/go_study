@@ -1,4 +1,4 @@
-package __ctx
+package __context_deadline
 
 import (
 	"context"
