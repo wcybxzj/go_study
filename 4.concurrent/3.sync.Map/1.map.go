@@ -55,7 +55,45 @@ func test2() {
 	time.Sleep(time.Second * 1)
 }
 
+/*
+说明当rlock上锁的时候,独占的lock就只能阻塞
+输出:
+rlocking i: 0
+rlocking i: 1
+rlocking i: 2
+some_key: 0
+some_key: 123
+*/
+func test3() {
+	var counter = struct {
+		sync.RWMutex
+		m map[string]int
+	}{m: make(map[string]int)}
+
+	go func() {
+		counter.RLock()
+		for i := 0; i < 3; i++ {
+			time.Sleep(time.Second)
+			fmt.Println("rlocking i:", i)
+		}
+		n := counter.m["some_key"]
+		counter.RUnlock()
+		fmt.Println("some_key:", n)
+	}()
+
+	go func() {
+		counter.Lock()
+		counter.m["some_key"] = 123
+		n := counter.m["some_key"]
+		counter.Unlock()
+		fmt.Println("some_key:", n)
+	}()
+
+	time.Sleep(time.Second * 100)
+}
+
 func main() {
-	test1()
+	//test1()
 	//test2()
+	test3()
 }
