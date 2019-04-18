@@ -23,7 +23,7 @@ func adder2(base int) iAdder {
 func test1() {
 	a := adder()
 	for i := 0; i < 10; i++ {
-		fmt.Printf("%d = %d\n",
+		fmt.Printf("0+1 ... +%d = %d\n",
 			i, a(i))
 	}
 }
@@ -33,12 +33,12 @@ func test2() {
 	a := adder2(0)
 	for i := 0; i < 10; i++ {
 		s, a = a(i)
-		fmt.Printf("%d = %d\n",
+		fmt.Printf("0+1 ... +%d = %d\n",
 			i, s)
 	}
 }
 
 func main() {
-	test1()
-	//test2()
+	//test1()
+	test2()
 }
