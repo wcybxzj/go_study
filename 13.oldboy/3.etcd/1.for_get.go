@@ -15,7 +15,7 @@ const (
 // ./etcdctl put /logagent/conf/ 123456
 func main() {
 	cli, err := clientv3.New(clientv3.Config{
-		Endpoints:   []string{"localhost:2379", "localhost:22379", "localhost:32379"},
+		Endpoints:   []string{"localhost:2379", "localhost:12379", "localhost:22379"},
 		DialTimeout: 5 * time.Second,
 	})
 	if err != nil {

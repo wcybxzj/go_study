@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/astaxie/beego/logs"
-	"go_study/13.oldboy/project/logagent/kafka"
-	"go_study/13.oldboy/project/logagent/tailf"
+	"13.oldboy/project/logagent/kafka"
+	"13.oldboy/project/logagent/tailf"
 	//"time"
 )
 

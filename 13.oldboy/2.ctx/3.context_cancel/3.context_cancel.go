@@ -3,6 +3,7 @@ package __context_cancel
 import (
 	"context"
 	"fmt"
+	time2 "go/src/time"
 	"time"
 )
 
@@ -56,5 +57,5 @@ func test() {
 
 func main() {
 	test()
-	time.Sleep(time.Hour)
+	time.Sleep(time2.Microsecond)
 }

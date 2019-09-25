@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"time"
-
 	"go_study/3.google_deep_go/5.interface/1.interface/mock"
 	"go_study/3.google_deep_go/5.interface/1.interface/real"
 )

@@ -1,9 +1,9 @@
 package server
 
 import (
+	"13.oldboy/project/log_transfer/tools"
 	"github.com/Shopify/sarama"
 	"github.com/astaxie/beego/logs"
-	"go_study/13.oldboy/project/log_transfer/tools"
 )
 
 func Run() (err error) {

@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 //普通测试:
 //终端:go test .
@@ -22,4 +25,8 @@ func TestTriangle(t *testing.T) {
 		}
 	}
 
+}
+
+func TestMyFun(t *testing.T)  {
+	fmt.Println("123")
 }

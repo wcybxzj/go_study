@@ -16,6 +16,10 @@ func calcTriangle(a, b int) int {
 	return c
 }
 
+func myFun()  {
+	fmt.Println("I am myFun")
+}
+
 func main() {
 	triangle()
 }

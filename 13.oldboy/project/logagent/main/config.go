@@ -1,10 +1,9 @@
 package main
 
 import (
+	"13.oldboy/project/logagent/tailf"
 	"errors"
 	"fmt"
-	"go_study/13.oldboy/day11/logagent/tailf"
-
 	"github.com/astaxie/beego/config"
 )
 

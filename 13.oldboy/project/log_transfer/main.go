@@ -1,10 +1,10 @@
 package main
 
 import (
+	"13.oldboy/project/log_transfer/config"
+	"13.oldboy/project/log_transfer/server"
+	"13.oldboy/project/log_transfer/tools"
 	"github.com/astaxie/beego/logs"
-	"go_study/13.oldboy/project/log_transfer/config"
-	"go_study/13.oldboy/project/log_transfer/server"
-	"go_study/13.oldboy/project/log_transfer/tools"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-package __context_deadline
+package main
 
 import (
 	"context"
@@ -25,6 +25,7 @@ func main() {
 	case <-time.After(1 * time.Second):
 		fmt.Println("overslept")
 	case <-ctx.Done():
+		fmt.Println("ctx.Done")
 		fmt.Println(ctx.Err())
 	}
 }

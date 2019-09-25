@@ -26,7 +26,9 @@ func test1() {
 	tr := &http.Transport{}
 	client := http.Client{Transport: tr}
 	c := make(chan Result, 1)
-	req, err := http.NewRequest("GET", "http://google.com", nil)
+	//req, err := http.NewRequest("GET", "http://google.com", nil)
+	req, err := http.NewRequest("GET", "http://www.baidu.com", nil)
+
 	if err != nil {
 		fmt.Println("http request failed, err", err)
 		return

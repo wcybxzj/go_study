@@ -1,11 +1,10 @@
 package main
 
 import (
+	"13.oldboy/project/logagent/tailf"
 	"context"
 	"encoding/json"
 	"fmt"
-	"go_study/13.oldboy/project/logagent/tailf"
-
 	"strings"
 	"time"
 
