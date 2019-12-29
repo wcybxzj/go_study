@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -92,8 +94,49 @@ func test3() {
 	time.Sleep(time.Second * 100)
 }
 
+//更真实的读写情况
+func test4() {
+	var counter = struct {
+		sync.RWMutex
+		m map[string]int
+	}{m: make(map[string]int)}
+
+	for i:=0;i<1000 ;i++  {
+		//reader 1000 goroutine
+		go func() {
+			for {
+				counter.RLock()
+				fmt.Println("read-read-read-read i:"+strconv.Itoa(i))
+				for i := 0; i < 3; i++ {
+					time.Sleep(time.Second)
+					fmt.Println("rlocking i:", i)
+				}
+				n := counter.m["some_key"]
+				counter.RUnlock()
+				time.Sleep(time.Second)
+				fmt.Println("some_key:", n)
+			}
+		}()
+	}
+
+
+	//write 1 goroutine
+ 	go func() {
+		counter.Lock()
+		fmt.Println("write-write-write-write")
+		counter.m["some_key"] = 123
+		n := counter.m["some_key"]
+		counter.Unlock()
+		os.Exit(0)
+		fmt.Println("some_key:", n)
+	}()
+
+	time.Sleep(time.Second * 100)
+}
+
 func main() {
 	//test1()
 	//test2()
-	test3()
+	//test3()
+	test4()
 }

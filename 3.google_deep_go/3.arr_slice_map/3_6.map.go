@@ -61,6 +61,9 @@ func test1() {
 	delete(m, "name")
 	name, ok = m["name"]
 	fmt.Println(name, ok)
+
+	m["new"]="11111"
+	fmt.Println(m)
 }
 
 //map的key

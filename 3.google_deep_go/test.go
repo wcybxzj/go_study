@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
+	"time"
 	"unicode"
-	"zuji/common/json"
+	"zuji/common/hash"
 )
 
 //判断是否为汉字
@@ -174,6 +175,7 @@ type OrderResponse struct {
 }
 
 func test10() {
+	/*
 	var str string
 	str = `{ "data": [], "code": "0", "msg": "成功" }`
 	res := OrderResponse{}
@@ -181,6 +183,7 @@ func test10() {
 	fmt.Println(res.Msg)
 	fmt.Println(res.Code)
 	fmt.Println(res.Data)
+	*/
 }
 
 func test11()  {
@@ -242,6 +245,22 @@ func test13()  {
 	}
 }
 
+//1000000
+//1000000000
+func test14()  {
+	fmt.Printf("%d\n", time.Millisecond)
+	fmt.Printf("%d\n", time.Second)
+
+
+	str := "MD5testing"
+	md5Str := hash.MD5Hex(str)
+
+	fmt.Println(md5Str)
+
+
+	//fmt.Println(time.Second)
+}
+
 func oldTest()  {
 	//test1()
 	//test2()
@@ -281,8 +300,9 @@ func main() {
 
 	//oldTest()
 
-	test12()
+	//test12()
 
+	test14()
 	/*
 	for i:=0; i<100;i++  {
 		re := rand.Intn(2)

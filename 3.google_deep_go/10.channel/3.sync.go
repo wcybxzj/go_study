@@ -96,9 +96,9 @@ func test_1_3() {
 //用Golang版本的WaitGroup, 让主协程来等待任务结束
 //Add是添加任务, Done是完成了任务, Wait是等待任务
 func test1() {
-	//test_1_1()//成功
+	test_1_1()//成功
 	//test_1_2()//成功
-	test_1_3() //失败
+	//test_1_3() //失败
 }
 
 type worker2 struct {

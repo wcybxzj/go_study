@@ -29,7 +29,6 @@ func (*MyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	time.Sleep(10 * time.Second)
 	w.Write([]byte("this is test response"))
 	fmt.Println("request done at ", time.Now(), "  pid:", os.Getpid())
-
 }
 
 //kill -HUP pid

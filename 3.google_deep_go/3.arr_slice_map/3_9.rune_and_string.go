@@ -34,18 +34,21 @@ func test1() {
 	//在utf8.rune模式下的字符数:
 	fmt.Println("Rune count:", utf8.RuneCountInString(s)) //9个rune长度
 	fmt.Println("=======================================================")
+
 	//方法1:索引是连贯的查看每个字节, 观察到UTF_8编码,1个中文占3个字节
 	for i, b := range []byte(s) {
 		fmt.Printf("(%d, %X) ", i, b) //每个字符以16进制显示
 	}
 	fmt.Println()
 	fmt.Println("=======================================================")
+
 	//方法2:索引不连贯
 	for i, ch := range s { //ch 32位/4字节/int32, 其实就是rune
 		fmt.Printf("(%d, %X, %c)", i, ch, ch) //
 	}
 	fmt.Println()
 	fmt.Println("=======================================================")
+
 	//方法3:
 	//[]byte可以将string类型转成字节切片
 	bytes := []byte(s)
@@ -58,6 +61,7 @@ func test1() {
 	}
 	fmt.Println()
 	fmt.Println("=======================================================")
+
 	//方法4:最常用的办法:新开一个rune数组来保存
 	for i, ch := range []rune(s) {
 		fmt.Printf("(%d %c)", i, ch)

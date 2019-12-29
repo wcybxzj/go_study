@@ -111,6 +111,34 @@ func test6() {
 	select {}
 }
 
+//解决1.map.go中test4()的问题
+func test7() {
+	var m sync.Map
+
+
+	m.Store("")
+
+	go func() {
+		for {
+			for i := 0; i < 3; i++ {
+				time.Sleep(time.Second)
+				fmt.Println("rlocking i:", i)
+			}
+			fmt.Println("some_key:", m[""])
+		}
+	}()
+
+	go func() {
+		counter.Lock()
+		counter.m["some_key"] = 123
+		n := counter.m["some_key"]
+		counter.Unlock()
+		fmt.Println("some_key:", n)
+	}()
+
+	time.Sleep(time.Second * 100)
+}
+
 func main() {
 	//test3()
 	//LoadOrStore4()
