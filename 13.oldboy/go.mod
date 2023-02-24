@@ -41,7 +41,7 @@ require (
 	github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2 // indirect
 	go.etcd.io/bbolt v1.3.3 // indirect
 	go.etcd.io/etcd v3.3.15+incompatible
-	golang.org/x/net v0.0.0-20190918130420-a8b05e9114ab
+	golang.org/x/net v0.7.0
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4 // indirect
 	google.golang.org/appengine v1.6.2 // indirect
 	google.golang.org/genproto v0.0.0-20190916214212-f660b8655731 // indirect
